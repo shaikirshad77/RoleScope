@@ -1,0 +1,27 @@
+services:
+  app:
+    image: python:3.14-slim
+    container_name: job_analyzer
+    ports:
+      - "8100:8100"
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: [ "python", "src/main.py" ]
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    container_name: job_analyzer_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: job_analyzer
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
